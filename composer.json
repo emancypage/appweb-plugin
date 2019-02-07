@@ -1,0 +1,17 @@
+{
+    "name": "appweb/appweb-plugin",
+    "description": "AppWeb base WordPress plugin.",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Szymon Szymkowiak",
+            "email": "szymkowiak.szymon@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"AppWeb\\Application\\": "./Application"}
+    }
+}
