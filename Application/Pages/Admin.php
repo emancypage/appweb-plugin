@@ -23,7 +23,6 @@ class Admin
         $this->settings = new SettingsApi();
         $this->addPages();
         $this->addSubpages();
-
     }
 
     public function register()
