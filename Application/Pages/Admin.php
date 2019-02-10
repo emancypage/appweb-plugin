@@ -5,6 +5,7 @@
 namespace AppWeb\Application\Pages;
 
 use AppWeb\Application\Api\Controller\Admin\CPTController;
+use AppWeb\Application\Api\Controller\Admin\CustomFieldsCallbacks;
 use AppWeb\Application\Api\Controller\Admin\DashboardController;
 use AppWeb\Application\Api\Controller\Admin\TaxManagerController;
 use AppWeb\Application\Api\Controller\Admin\WidgetsController;
@@ -16,28 +17,34 @@ use AppWeb\Application\Api\SettingsApi;
 class Admin
 {
     /** @var SettingsApi  */
-    protected $settings;
+    protected $oSettingsApi;
 
     /** @var array Array of pages declaration */
     protected $pages = [];
+
+    /** @var array Array of subpages declaration */
     protected $subpages = [];
 
     public function __construct()
     {
-        $this->settings = new SettingsApi();
-        $this->addPages();
-        $this->addSubpages();
+        $this->oSettingsApi = new SettingsApi();
+        $this->setPages();
+        $this->setSubpages();
     }
 
     public function register()
     {
-        $this->settings->addPages($this->pages)
+        $this->setCfSettings();
+        $this->setCfSections();
+        $this->setCfFields();
+
+        $this->oSettingsApi->addPages($this->pages)
             ->withSubPage('Dashboard')
             ->addSubPages($this->subpages)
             ->register();
 	}
 
-	protected function addPages()
+	protected function setPages()
     {
         $this->pages = [
             [
@@ -52,7 +59,7 @@ class Admin
         ];
     }
 
-    protected function addSubpages()
+    protected function setSubpages()
     {
         $this->subpages = [
             [
@@ -80,5 +87,66 @@ class Admin
                 'callback' => [new WidgetsController(), 'render']
             ]
         ];
+    }
+
+    public function setCfSettings()
+    {
+        $args = array(
+            array(
+                'option_group' => 'appweb_options_group',
+                'option_name' => 'text_example',
+                'callback' => array( new CustomFieldsCallbacks(), 'appwebInputCallback' )
+            ),
+            array(
+                'option_group' => 'appweb_options_group',
+                'option_name' => 'first_name'
+            )
+        );
+
+        $this->oSettingsApi->setCfSettings( $args );
+    }
+
+    public function setCfSections()
+    {
+        $args = array(
+            array(
+                'id' => 'appweb_admin_index',
+                'title' => 'Settings',
+                'callback' => array( new CustomFieldsCallbacks(), 'appwebAdminSection' ),
+                'page' => 'appweb_plugin'
+            )
+        );
+
+        $this->oSettingsApi->setCfSections( $args );
+    }
+
+    public function setCfFields()
+    {
+        $args = array(
+            array(
+                'id' => 'text_example',
+                'title' => 'Text Example',
+                'callback' => array( new CustomFieldsCallbacks(), 'appwebTextExample' ),
+                'page' => 'appweb_plugin',
+                'section' => 'appweb_admin_index',
+                'args' => array(
+                    'label_for' => 'text_example',
+                    'class' => 'example-class'
+                )
+            ),
+            array(
+                'id' => 'first_name',
+                'title' => 'First Name',
+                'callback' => array( new CustomFieldsCallbacks(), 'appwebFirstName' ),
+                'page' => 'appweb_plugin',
+                'section' => 'appweb_admin_index',
+                'args' => array(
+                    'label_for' => 'first_name',
+                    'class' => 'example-class'
+                )
+            )
+        );
+
+        $this->oSettingsApi->setCfFields( $args );
     }
 }
