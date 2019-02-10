@@ -4,6 +4,10 @@
  */
 namespace AppWeb\Application\Pages;
 
+use AppWeb\Application\Api\Controller\Admin\CPTController;
+use AppWeb\Application\Api\Controller\Admin\DashboardController;
+use AppWeb\Application\Api\Controller\Admin\TaxManagerController;
+use AppWeb\Application\Api\Controller\Admin\WidgetsController;
 use AppWeb\Application\Api\SettingsApi;
 
 /**
@@ -41,9 +45,9 @@ class Admin
                 'menu_title' => 'AppWeb',
                 'capability' => 'manage_options',
                 'menu_slug' => 'appweb_plugin',
-                'callback' => function() { echo "<h1>Test Callback</h1>"; },
                 'icon_url' => 'dashicons-store',
-                'position' => 110
+                'position' => 110,
+                'callback' => [new DashboardController(), 'render']
             ]
         ];
     }
@@ -57,7 +61,7 @@ class Admin
                 'menu_title' => 'CPT',
                 'capability' => 'manage_options',
                 'menu_slug' => 'appweb_plugin_cpt',
-                'callback' => function() { echo '<h1>CPT Manager</h1>'; }
+                'callback' => [new CPTController(), 'render']
             ],
             [
                 'parent_slug' => 'appweb_plugin',
@@ -65,7 +69,7 @@ class Admin
                 'menu_title' => 'Taxonomies',
                 'capability' => 'manage_options',
                 'menu_slug' => 'appweb_plugin_taxonomies',
-                'callback' => function() { echo '<h1>Taxonomies Manager</h1>'; }
+                'callback' => [new TaxManagerController(), 'render']
             ],
             [
                 'parent_slug' => 'appweb_plugin',
@@ -73,7 +77,7 @@ class Admin
                 'menu_title' => 'Widgets',
                 'capability' => 'manage_options',
                 'menu_slug' => 'appweb_plugin_widgets',
-                'callback' => function() { echo '<h1>Widgets Manager</h1>'; }
+                'callback' => [new WidgetsController(), 'render']
             ]
         ];
     }
