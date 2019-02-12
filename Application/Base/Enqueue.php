@@ -17,7 +17,7 @@ class Enqueue
     {
         $sPluginUrl = Config::getPluginUrl();
 		// enqueue all our scripts
-		wp_enqueue_style('appweb_pluginstyle', $sPluginUrl . 'out/css/appweb_pluginstyle.css');
-		wp_enqueue_script('appweb_pluginscript', $sPluginUrl . 'out/js/appweb_pluginscript.js');
+		wp_enqueue_style('appweb_admin_pluginstyle', $sPluginUrl . 'out/css/appweb_admin_pluginstyle.min.css');
+		wp_enqueue_script('appweb_admin_pluginscript', $sPluginUrl . 'out/js/appweb_admin_pluginscript.min.js');
 	}
 }
